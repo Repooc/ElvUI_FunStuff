@@ -5,8 +5,8 @@
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: FUNDB
-## X-Curse-Project-ID:
-## X-Wago-ID:
+## X-Curse-Project-ID: 606970
+## X-Wago-ID: VBNBYeGx
 
 Profile.lua
 Media\SharedMedia.lua
