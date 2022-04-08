@@ -21,7 +21,10 @@ local function SetPage()
 		end
 	end
 end
-hooksecurefunc(PI, 'SetPage', SetPage)
+
+if PI.SetPage then
+	hooksecurefunc(PI, 'SetPage', SetPage)
+end
 
 local function profileCheck(data)
 	if not data then _G.PluginInstallFrame.Prev:Click() return end

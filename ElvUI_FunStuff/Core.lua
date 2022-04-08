@@ -6,6 +6,7 @@ local FUN = E:NewModule(AddOnName, 'AceHook-3.0')
 _G[AddOnName] = Engine
 FUN.Version = GetAddOnMetadata('ElvUI_FunStuff', 'Version')
 FUN.Configs = {}
+FUN.RequiredVersion = E.Retail and 12.75 or E.TBC and 2.42 or E.Classic and 1.67
 
 E.PopupDialogs.FUN_HARLEM_SHAKE = {
 	text = L["ElvUI needs to perform database optimizations please be patient."],
@@ -85,7 +86,16 @@ function FUN:UpdateOptions()
 	FUN:UpdateTukuiPanels()
 end
 
+local function VersionCheck()
+	if E.version < FUN.RequiredVersion then
+		FUN:Print(format('|cffbf0008%s|r', L["This plugin requires a higher version of ElvUI, please check for an update and reload your ui."]))
+		return true
+	end
+end
+
 function FUN:Initialize()
+	if VersionCheck() then return end
+
 	EP:RegisterPlugin(AddOnName, GetOptions)
 	LoadCommands()
 
