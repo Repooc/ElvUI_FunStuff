@@ -1,4 +1,4 @@
-# **Fun** Stuff for ElvUI (ElvUI Plugin)
+# **Fun**Stuff for ElvUI (ElvUI Plugin)
 
 **Do remember some of those April Fools jokes ElvUI had?**  
 
