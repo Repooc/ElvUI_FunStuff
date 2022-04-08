@@ -1,0 +1,7 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='Changelog.lua'/>
+	<Script file='Installer.lua'/>
+	<Script file='HarlemShake.lua'/>
+	<Script file='HelloKitty.lua'/>
+	<Script file='Tukui.lua'/>
+</Ui>

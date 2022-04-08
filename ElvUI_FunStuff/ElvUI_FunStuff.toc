@@ -1,0 +1,18 @@
+﻿## Interface: 90200
+## Interface-BCC: 20504
+## Interface-Classic: 11402
+## Title: |cff1784d1ElvUI|r |cFF16C3F2Fun|rStuff
+## Author: Repooc
+## Version: 1.00
+## RequiredDeps: ElvUI
+## DefaultState: Enabled
+## SavedVariables: FUNDB
+## X-Curse-Project-ID:
+## X-Wago-ID:
+
+Profile.lua
+Media\SharedMedia.lua
+Core.lua
+Locales\Load_Locales.xml
+Modules\Load_Modules.xml
+Options.lua
