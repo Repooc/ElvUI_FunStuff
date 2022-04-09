@@ -101,6 +101,11 @@ function FUN:SetupHelloKitty(newProfile)
 		E.db.databars.reputation.orientation = 'VERTICAL'
 		E.db.databars.reputation.width = 8
 
+		--* Datatexts
+		E.db.datatexts.panels.MinimapPanel.numPoints = 1
+		E.db.datatexts.panels.MinimapPanel[1] = 'Time'
+		E.db.datatexts.panels.RightChatDataPanel[2] = 'Volume'
+
 		--* Unitframe (General)
 		if locale == 'ruRU' then
 			E.db.unitframe.font = 'PT Sans Narrow'

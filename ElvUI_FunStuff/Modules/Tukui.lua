@@ -70,6 +70,7 @@ function FUN:SetupTukuiProfile(newProfile)
 	E.db.datatexts.fontSize = 12
 	E.db.datatexts.panels.MinimapPanel.numPoints = 1
 	E.db.datatexts.panels.MinimapPanel[1] = 'Time'
+	E.db.datatexts.panels.RightChatDataPanel[2] = 'Volume'
 
 	--* Unitframe (General)
 	E.db.unitframe.colors = E:CopyTable({}, P.unitframe.colors)
