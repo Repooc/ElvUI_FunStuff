@@ -104,7 +104,7 @@ function FUN:SetupTukuiProfile(newProfile)
 	E.db.unitframe.units.player.infoPanel.height = 21
 	E.db.unitframe.units.player.name.attachTextTo = 'InfoPanel'
 	E.db.unitframe.units.player.name.position = 'LEFT'
-	E.db.unitframe.units.player.name.text_format = '[difficultycolor][level] [classcolor][name:medium]  [shortclassification]'
+	E.db.unitframe.units.player.name.text_format = '[difficultycolor][level] [classcolor][name:medium]'
 	E.db.unitframe.units.player.power.attachTextTo = 'InfoPanel'
 	E.db.unitframe.units.player.power.height = 8
 	E.db.unitframe.units.player.power.text_format = ''
