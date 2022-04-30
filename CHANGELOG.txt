@@ -1,3 +1,4 @@
-v1.01 4/8/2022
+v1.02 4/30/2022
 
-- Update profiles
+• Update Tukui Player profile a little
+• Bump SoM TOC

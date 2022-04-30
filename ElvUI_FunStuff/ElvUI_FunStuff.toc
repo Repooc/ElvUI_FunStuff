@@ -1,9 +1,9 @@
 ﻿## Interface: 90200
 ## Interface-BCC: 20504
-## Interface-Classic: 11402
+## Interface-Classic: 11403
 ## Title: |cff1784d1ElvUI|r |cFF16C3F2Fun|rStuff
 ## Author: Repooc
-## Version: 1.01
+## Version: 1.02
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: FUNDB

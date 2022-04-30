@@ -6,6 +6,10 @@ local module = E:NewModule('FunStuff-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.02 4/30/2022',
+		"• Update Tukui Player profile a little",
+		"• Bump SoM TOC",
+	' ',
 	'v1.01 4/8/2022',
 		"• Update profiles",
 	' ',
