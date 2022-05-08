@@ -1,4 +1,3 @@
-v1.02 4/30/2022
+v1.03 5/7/2022
 
-• Update Tukui Player profile a little
-• Bump SoM TOC
+• fix cubes not sitting on the verticle lines with thin mode enabled
