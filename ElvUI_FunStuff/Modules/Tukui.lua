@@ -194,8 +194,8 @@ function FUN:SetupTukuiProfile(newProfile)
 	E.db.unitframe.units.party.verticalSpacing = 39
 	E.db.unitframe.units.party.width = 250
 
-	--* Raid
-	E.db.unitframe.units.raid['customTexts'] = {
+	--* Raid 1
+	E.db.unitframe.units.raid1['customTexts'] = {
 		['Names'] = {
 			attachTextTo = 'InfoPanel',
 			enable = true,
@@ -208,24 +208,24 @@ function FUN:SetupTukuiProfile(newProfile)
 			yOffset = 0,
 		}
 	}
-	E.db.unitframe.units.raid.health.attachTextTo = 'InfoPanel'
-	E.db.unitframe.units.raid.health.position = 'RIGHT'
-	E.db.unitframe.units.raid.height = 38
-	E.db.unitframe.units.raid.infoPanel.enable = true
-	E.db.unitframe.units.raid.infoPanel.height = 13
-	E.db.unitframe.units.raid.name.attachTextTo = 'InfoPanel'
-	E.db.unitframe.units.raid.name.text_format = ''
-	E.db.unitframe.units.raid.power.attachTextTo = 'InfoPanel'
-	E.db.unitframe.units.raid.rdebuffs.font = 'Tukui Actionbars'
-	E.db.unitframe.units.raid.rdebuffs.fontOutline = 'OUTLINE'
-	E.db.unitframe.units.raid.rdebuffs.fontSize = 11
-	E.db.unitframe.units.raid.rdebuffs.size = 22
-	E.db.unitframe.units.raid.rdebuffs.yOffset = 22
-	E.db.unitframe.units.raid.roleIcon.position = 'RIGHT'
-	E.db.unitframe.units.raid.width = 95
+	E.db.unitframe.units.raid1.health.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid1.health.position = 'RIGHT'
+	E.db.unitframe.units.raid1.height = 38
+	E.db.unitframe.units.raid1.infoPanel.enable = true
+	E.db.unitframe.units.raid1.infoPanel.height = 13
+	E.db.unitframe.units.raid1.name.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid1.name.text_format = ''
+	E.db.unitframe.units.raid1.power.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid1.rdebuffs.font = 'Tukui Actionbars'
+	E.db.unitframe.units.raid1.rdebuffs.fontOutline = 'OUTLINE'
+	E.db.unitframe.units.raid1.rdebuffs.fontSize = 11
+	E.db.unitframe.units.raid1.rdebuffs.size = 22
+	E.db.unitframe.units.raid1.rdebuffs.yOffset = 22
+	E.db.unitframe.units.raid1.roleIcon.position = 'RIGHT'
+	E.db.unitframe.units.raid1.width = 95
 
-	--* Raid40
-	E.db.unitframe.units.raid40['customTexts'] = {
+	--* Raid 2
+	E.db.unitframe.units.raid2['customTexts'] = {
 		['Names'] = {
 			attachTextTo = 'InfoPanel',
 			enable = true,
@@ -238,24 +238,54 @@ function FUN:SetupTukuiProfile(newProfile)
 			yOffset = 0,
 		}
 	}
-	E.db.unitframe.units.raid40.health.attachTextTo = 'InfoPanel'
-	E.db.unitframe.units.raid40.health.position = 'RIGHT'
-	E.db.unitframe.units.raid40.height = 30
-	E.db.unitframe.units.raid40.horizontalSpacing = 2
-	E.db.unitframe.units.raid40.infoPanel.enable = true
-	E.db.unitframe.units.raid40.infoPanel.height = 13
-	E.db.unitframe.units.raid40.name.attachTextTo = 'InfoPanel'
-	E.db.unitframe.units.raid40.name.text_format = ''
-	E.db.unitframe.units.raid40.rdebuffs.enable = true
-	E.db.unitframe.units.raid40.rdebuffs.font = 'Tukui Actionbars'
-	E.db.unitframe.units.raid40.rdebuffs.fontOutline = 'OUTLINE'
-	E.db.unitframe.units.raid40.rdebuffs.fontSize = 11
-	E.db.unitframe.units.raid40.rdebuffs.size = 22
-	E.db.unitframe.units.raid40.rdebuffs.yOffset = 16
-	E.db.unitframe.units.raid40.roleIcon.enable = true
-	E.db.unitframe.units.raid40.roleIcon.position = 'RIGHT'
-	E.db.unitframe.units.raid40.verticalSpacing = 2
-	E.db.unitframe.units.raid40.width = 95
+	E.db.unitframe.units.raid2.health.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid2.health.position = 'RIGHT'
+	E.db.unitframe.units.raid2.height = 38
+	E.db.unitframe.units.raid2.infoPanel.enable = true
+	E.db.unitframe.units.raid2.infoPanel.height = 13
+	E.db.unitframe.units.raid2.name.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid2.name.text_format = ''
+	E.db.unitframe.units.raid2.power.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid2.rdebuffs.font = 'Tukui Actionbars'
+	E.db.unitframe.units.raid2.rdebuffs.fontOutline = 'OUTLINE'
+	E.db.unitframe.units.raid2.rdebuffs.fontSize = 11
+	E.db.unitframe.units.raid2.rdebuffs.size = 22
+	E.db.unitframe.units.raid2.rdebuffs.yOffset = 22
+	E.db.unitframe.units.raid2.roleIcon.position = 'RIGHT'
+	E.db.unitframe.units.raid2.width = 95
+
+	--* Raid 3
+	E.db.unitframe.units.raid3['customTexts'] = {
+		['Names'] = {
+			attachTextTo = 'InfoPanel',
+			enable = true,
+			font = 'Tukui Unitframes',
+			fontOutline = 'OUTLINE',
+			justifyH = 'LEFT',
+			size = 13,
+			text_format = '[difficultycolor][smartlevel< ][classcolor][name:medium]',
+			xOffset = 0,
+			yOffset = 0,
+		}
+	}
+	E.db.unitframe.units.raid3.health.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid3.health.position = 'RIGHT'
+	E.db.unitframe.units.raid3.height = 30
+	E.db.unitframe.units.raid3.horizontalSpacing = 2
+	E.db.unitframe.units.raid3.infoPanel.enable = true
+	E.db.unitframe.units.raid3.infoPanel.height = 13
+	E.db.unitframe.units.raid3.name.attachTextTo = 'InfoPanel'
+	E.db.unitframe.units.raid3.name.text_format = ''
+	E.db.unitframe.units.raid3.rdebuffs.enable = true
+	E.db.unitframe.units.raid3.rdebuffs.font = 'Tukui Actionbars'
+	E.db.unitframe.units.raid3.rdebuffs.fontOutline = 'OUTLINE'
+	E.db.unitframe.units.raid3.rdebuffs.fontSize = 11
+	E.db.unitframe.units.raid3.rdebuffs.size = 22
+	E.db.unitframe.units.raid3.rdebuffs.yOffset = 16
+	E.db.unitframe.units.raid3.roleIcon.enable = true
+	E.db.unitframe.units.raid3.roleIcon.position = 'RIGHT'
+	E.db.unitframe.units.raid3.verticalSpacing = 2
+	E.db.unitframe.units.raid3.width = 95
 
 	--* Focus
 	E.db.unitframe.units.focus.castbar.overlayOnFrame = 'Power'
@@ -464,8 +494,9 @@ function FUN:SetupTukuiProfile(newProfile)
 	E.db.movers['ElvUF_PartyMover'] = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,448,226'
 	E.db.movers['ElvUF_PetMover'] = 'BOTTOM,ElvUF_TargetTargetMover,TOP,0,50'
 	E.db.movers['ElvUF_PlayerMover'] = 'BOTTOMLEFT,ElvAB_2,TOPLEFT,0,15'
-	E.db.movers['ElvUF_Raid40Mover'] = 'BOTTOMLEFT,LeftChatMover,TOPLEFT,0,47'
-	E.db.movers['ElvUF_RaidMover'] = 'BOTTOMLEFT,LeftChatMover,TOPLEFT,0,47'
+	E.db.movers['ElvUF_Raid3Mover'] = 'BOTTOMLEFT,LeftChatMover,TOPLEFT,0,47'
+	E.db.movers['ElvUF_Raid2Mover'] = 'BOTTOMLEFT,LeftChatMover,TOPLEFT,0,47'
+	E.db.movers['ElvUF_Raid1Mover'] = 'BOTTOMLEFT,LeftChatMover,TOPLEFT,0,47'
 	E.db.movers['ElvUF_TargetMover'] = 'BOTTOMRIGHT,ElvAB_3,TOPRIGHT,0,15'
 	E.db.movers['ElvUF_TargetTargetMover'] = 'BOTTOM,ElvAB_1,TOP,0,15'
 	E.db.movers['ElvUIBagMover'] = 'BOTTOMRIGHT,RightChatPanel,BOTTOMRIGHT,0,26'
