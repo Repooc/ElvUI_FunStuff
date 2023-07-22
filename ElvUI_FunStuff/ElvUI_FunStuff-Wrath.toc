@@ -1,7 +1,7 @@
-﻿## Interface: 30400
+﻿## Interface: 30402
 ## Title: |cff1784d1ElvUI|r |cFF16C3F2Fun|rStuff
 ## Author: Repooc
-## Version: 1.08
+## Version: 1.09
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: FUNDB

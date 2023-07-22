@@ -1,4 +1,4 @@
-v1.08 11/2/2022
+v1.09 7/22/2023
 
-• toc bump for 10.0
-• fix for 10.0 changes
+• toc bump for Retail 10.1.5
+• toc bump for Wrath 3.4.2
