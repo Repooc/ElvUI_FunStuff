@@ -103,7 +103,7 @@ function module:CreateChangelog()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
-	if E.Retail then
+	if frame.SetResizeBounds then
 		frame:SetResizeBounds(350, 100)
 	else
 		frame:SetMinResize(350, 100)
@@ -200,6 +200,7 @@ function module:ToggleChangeLog()
 	fadeInfo.timeToFade = 0.5
 	fadeInfo.startAlpha = 0
 	fadeInfo.endAlpha = 1
+	FUNChangelog:Show()
 	E:UIFrameFade(FUNChangelog, fadeInfo)
 
 	module.time = 6
