@@ -631,7 +631,7 @@ local function CreateTopLines()
 	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
 	local yOffset = horizontal.yOffset and (horizontal.yOffset <= 0 and horizontal.yOffset or -horizontal.yOffset) or -30
 	local TopLine = CreateFrame('Frame', nil, E.UIParent)
-	TopLine:SetTemplate()
+	TopLine:SetTemplate(nil, nil, true)
 	TopLine:SetSize(2, horizontal.width or 2)
 	TopLine:Point('TOPLEFT', leftOffset, yOffset)
 	TopLine:Point('TOPRIGHT', rightOffset, yOffset)
@@ -641,7 +641,7 @@ local function CreateTopLines()
 	-- TukuiTopLine:CreateShadow(2)
 
 	local LeftVerticalLine = CreateFrame('Frame', nil, TopLine)
-	LeftVerticalLine:SetTemplate()
+	LeftVerticalLine:SetTemplate(nil, nil, true)
 	LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
 	LeftVerticalLine:Point('TOPRIGHT', TopLine, 'TOPLEFT', 0, 0)
 	LeftVerticalLine:SetFrameLevel(0)
@@ -651,7 +651,7 @@ local function CreateTopLines()
 	FUN.lines.top.LeftVerticalLine = LeftVerticalLine
 
 	local LeftCube = CreateFrame('Frame', nil, LeftVerticalLine)
-	LeftCube:SetTemplate()
+	LeftCube:SetTemplate(nil, nil, true)
 	LeftCube:SetSize(10, 10)
 	LeftCube:Point('TOP', LeftVerticalLine, 'BOTTOM', 0, E.PixelMode and 0 or E.Border)
 	LeftCube:EnableMouse(true)
@@ -661,7 +661,7 @@ local function CreateTopLines()
 	TopLine.LeftVerticalLine = LeftVerticalLine
 
 	local RightVerticalLine = CreateFrame('Frame', nil, TopLine)
-	RightVerticalLine:SetTemplate()
+	RightVerticalLine:SetTemplate(nil, nil, true)
 	RightVerticalLine:SetSize(right.width or 2, right.length or 180)
 	RightVerticalLine:Point('TOPLEFT', TopLine, 'TOPRIGHT', 0, 0)
 	RightVerticalLine:SetFrameLevel(0)
@@ -671,7 +671,7 @@ local function CreateTopLines()
 	FUN.lines.top.RightVerticalLine = RightVerticalLine
 
 	local RightCube = CreateFrame('Frame', nil, RightVerticalLine)
-	RightCube:SetTemplate()
+	RightCube:SetTemplate(nil, nil, true)
 	RightCube:SetSize(10, 10)
 	RightCube:Point('TOP', RightVerticalLine, 'BOTTOM', 0, E.PixelMode and 0 or E.Border)
 	RightCube:EnableMouse(true)
@@ -727,7 +727,7 @@ local function CreateBottomLines()
 	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
 	local yOffset = horizontal.yOffset and (horizontal.yOffset >= 0 and horizontal.yOffset or -horizontal.yOffset) or 30
 	local BottomLine = CreateFrame('Frame', nil, E.UIParent)
-	BottomLine:SetTemplate()
+	BottomLine:SetTemplate(nil, nil, true)
 	BottomLine:SetSize(2, horizontal.width or 2)
 	BottomLine:Point('BOTTOMLEFT', leftOffset, yOffset)
 	BottomLine:Point('BOTTOMRIGHT', rightOffset, yOffset)
@@ -737,7 +737,7 @@ local function CreateBottomLines()
 	-- BottomLine:CreateShadow(2)
 
 	local LeftVerticalLine = CreateFrame('Frame', nil, BottomLine)
-	LeftVerticalLine:SetTemplate()
+	LeftVerticalLine:SetTemplate(nil, nil, true)
 	LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
 	LeftVerticalLine:Point('BOTTOMRIGHT', BottomLine, 'BOTTOMLEFT', 0, 0)
 	LeftVerticalLine:SetFrameLevel(0)
@@ -747,7 +747,7 @@ local function CreateBottomLines()
 	FUN.lines.top.LeftVerticalLine = LeftVerticalLine
 
 	local LeftCube = CreateFrame('Frame', nil, LeftVerticalLine)
-	LeftCube:SetTemplate()
+	LeftCube:SetTemplate(nil, nil, true)
 	LeftCube:SetSize(10, 10)
 	LeftCube:Point('BOTTOM', LeftVerticalLine, 'TOP', 0, E.PixelMode and 0 or E.Border)
 	LeftCube:EnableMouse(true)
@@ -757,7 +757,7 @@ local function CreateBottomLines()
 	BottomLine.LeftVerticalLine = LeftVerticalLine
 
 	local RightVerticalLine = CreateFrame('Frame', nil, BottomLine)
-	RightVerticalLine:SetTemplate()
+	RightVerticalLine:SetTemplate(nil, nil, true)
 	RightVerticalLine:SetSize(right.width or 2, right.length or 180)
 	RightVerticalLine:Point('BOTTOMLEFT', BottomLine, 'BOTTOMRIGHT', 0, 0)
 	RightVerticalLine:SetFrameLevel(0)
@@ -767,7 +767,7 @@ local function CreateBottomLines()
 	FUN.lines.top.RightVerticalLine = RightVerticalLine
 
 	local RightCube = CreateFrame('Frame', nil, RightVerticalLine)
-	RightCube:SetTemplate()
+	RightCube:SetTemplate(nil, nil, true)
 	RightCube:SetSize(10, 10)
 	RightCube:Point('BOTTOM', RightVerticalLine, 'TOP', 0, E.PixelMode and 0 or E.Border)
 	RightCube:EnableMouse(true)
