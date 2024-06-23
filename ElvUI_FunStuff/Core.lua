@@ -84,6 +84,8 @@ end
 function FUN:UpdateOptions()
 	FUN:UpdateDancingKittys()
 	FUN:UpdateTukuiPanels()
+	FUN:UpdateTopLines()
+	FUN:UpdateBottomLines()
 end
 
 local function VersionCheck()

@@ -1,5 +1,7 @@
-﻿## Interface: 100200
-## Title: |cff1784d1ElvUI|r |cFF16C3F2Fun|rStuff
+﻿## Interface: 100207
+## Interface-Cata: 40400
+## Interface-Classic: 11502
+## Title: |cff1784d1ElvUI|r |cff00FF98Fun|r|cffA330C9Stuff|r
 ## Author: Repooc
 ## Version: 1.10
 ## RequiredDeps: ElvUI
@@ -10,6 +12,7 @@
 ## IconTexture: Interface\AddOns\ElvUI_FunStuff\Logo
 
 Profile.lua
+Libs\Load_Libs.xml
 Media\SharedMedia.lua
 Core.lua
 Locales\Load_Locales.xml

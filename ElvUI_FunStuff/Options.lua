@@ -1,7 +1,8 @@
-local E, L = unpack(ElvUI)
+local E, L, _, P = unpack(ElvUI)
 local FUN = E:GetModule('ElvUI_FunStuff')
 local FUNCL = E:GetModule('FunStuff-Changelog')
 local ACH = E.Libs.ACH
+local RRP = LibStub('RepoocReforged-1.0'):LoadMainCategory()
 
 local DEVELOPERS = {
 	'|cff0070DEAzilroka|r',
@@ -55,10 +56,19 @@ local function SetupNewProfile(info, value)
 end
 
 local function configTable()
-	local fun = ACH:Group('|cFF16C3F2Fun|rStuff', nil, 6, 'tab', nil, nil)
-	E.Options.args.fun = fun
+	--* Repooc Reforged Plugin section
+	local rrp = E.Options.args.rrp
 
-	local Options = ACH:Group(L["Options"], nil, 0, nil, function(info) return E.db.fun[info[#info-1]][info[#info]] end, function(info, value) E.db.fun[info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	--* Plugin Section
+	local fun = ACH:Group('|cff00FF98Fun|r|cffA330C9Stuff|r', nil, 6, 'tab', nil, nil)
+	if not rrp then
+		print("Error Loading Repooc Reforged Plugin Library, make sure to download the addon from Wago AddOns or Curseforge instead of github!")
+		E.Options.args.fun = fun
+	else
+		rrp.args.fun = fun
+	end
+
+	local Options = ACH:Group(L["Options"], nil, 0, 'tab', function(info) return E.db.fun[info[#info-1]][info[#info]] end, function(info, value) E.db.fun[info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
 	fun.args.options = Options
 
 	local Harlem = ACH:Group('|cffFFD100Harlem Shake|r', "this is a test desc to see how well this handles long as messages and just keep on going.  i don't know if i will use it but best to be safe than sorry.", 5, nil, nil, nil)
@@ -75,12 +85,91 @@ local function configTable()
 	Kitty.args.applyToProfile = ACH:Execute(L["Apply To Current Profile"], nil, 6, function(info, value) SetupNewProfile(info, value) end, nil, nil, 200)
 
 	local Tukui = ACH:Group('|cffFF8000Tukui|r', nil, 10)
-	ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
 	Options.args.tukui = Tukui
 	Tukui.inline = true
 	Tukui.args.enable = ACH:Toggle(L["Show Tukui Bars"], nil, 0)
 	Tukui.args.spacer = ACH:Spacer(1, 'full')
 	Tukui.args.newProfile = ACH:Execute(L["Create New Profile"], nil, 5, function(info, value) SetupNewProfile(info, value) end, nil, nil, 200)
+
+	--* Tukui Top Lines
+	local top = ACH:Group('|cffFF8000Top|r Lines', nil, 98, 'tab', function(info) return E.db.fun.lines[info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	Options.args.top = top
+	top.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	top.args.spacer = ACH:Spacer(1, 'full')
+
+	top.args.horizontal = ACH:Group(L["Horizontal"], nil, 14, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	top.args.horizontal.inline = true
+	top.args.horizontal.args.yOffset = ACH:Range(L["yOffset"], L["This will adjust the Horizontal line's distance from the edge of the screen."], 1, { min = -750, softMin = -350, softMax = 0, max = 0, step = 1 })
+	top.args.horizontal.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	top.args.horizontal.args.spacer1 = ACH:Spacer(4, 'full')
+	top.args.horizontal.args.borderColor = ACH:Color(L["Border Color"], nil, 14, true, nil, function(info) local t = E.db.fun.lines.top.horizontal[info[#info]] local d = P.fun.lines.top.horizontal[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.horizontal[info[#info]] = {} local t = E.db.fun.lines.top.horizontal[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.horizontal.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 14, true, nil, function(info) local t = E.db.fun.lines.top.horizontal[info[#info]] local d = P.fun.lines.top.horizontal[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.horizontal[info[#info]] = {} local t = E.db.fun.lines.top.horizontal[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+
+	top.args.left = ACH:Group(L["Left"], nil, 15, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	top.args.left.inline = true
+	top.args.left.args.xOffset = ACH:Range(L["xOffset"], format(L["This will adjust the %s vertical line's distance from the edge of the screen, which determines the length of the horizontal line as well."], L["Left"]), 1, { softMin = 0, min = 0, softMax = 350, max = 750, step = 1 })
+	top.args.left.args.length = ACH:Range(L["Length"], nil, 2, { softMin = 5, min = 2, softMax = 250, max = 500, step = 1 })
+	top.args.left.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	top.args.left.args.spacer1 = ACH:Spacer(4, 'full')
+	top.args.left.args.header1 = ACH:Header(L["Line Color"], 15)
+	top.args.left.args.borderColor = ACH:Color(L["Border Color"], nil, 16, true, nil, function(info) local t = E.db.fun.lines.top.left[info[#info]] local d = P.fun.lines.top.left[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.left[info[#info]] = {} local t = E.db.fun.lines.top.left[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.left.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 17, true, nil, function(info) local t = E.db.fun.lines.top.left[info[#info]] local d = P.fun.lines.top.left[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.left[info[#info]] = {} local t = E.db.fun.lines.top.left[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.left.args.header2 = ACH:Header(L["Cube Color"], 20)
+	top.args.left.args.cubeBorderColor = ACH:Color(L["Border Color"], nil, 21, true, nil, function(info) local t = E.db.fun.lines.top.left.cube.borderColor local d = P.fun.lines.top.left.cube.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.left.cube.borderColor = {} local t = E.db.fun.lines.top.left.cube.borderColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.left.args.cubeBackdropColor = ACH:Color(L["Backdrop Color"], nil, 22, true, nil, function(info) local t = E.db.fun.lines.top.left.cube.backdropColor local d = P.fun.lines.top.left.cube.backdropColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.left.cube.backdropColor = {} local t = E.db.fun.lines.top.left.cube.backdropColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+
+	top.args.right = ACH:Group(L["Right"], nil, 16, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	top.args.right.inline = true
+	top.args.right.args.xOffset = ACH:Range(L["xOffset"], format(L["This will adjust the %s vertical line's distance from the edge of the screen, which determines the length of the horizontal line as well."], L["Right"]), 1, { min = -750, softMin = -350, softMax = 0, max = 0, step = 1 })
+	top.args.right.args.length = ACH:Range(L["Length"], nil, 2, { softMin = 5, min = 2, softMax = 250, max = 500, step = 1 })
+	top.args.right.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	top.args.right.args.spacer1 = ACH:Spacer(4, 'full')
+	top.args.right.args.header1 = ACH:Header(L["Line Color"], 15)
+	top.args.right.args.borderColor = ACH:Color(L["Border Color"], nil, 16, true, nil, function(info) local t = E.db.fun.lines.top.right[info[#info]] local d = P.fun.lines.top.right[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.right[info[#info]] = {} local t = E.db.fun.lines.top.right[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.right.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 17, true, nil, function(info) local t = E.db.fun.lines.top.right[info[#info]] local d = P.fun.lines.top.right[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.right[info[#info]] = {} local t = E.db.fun.lines.top.right[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.right.args.header2 = ACH:Header(L["Cube Color"], 20)
+	top.args.right.args.cubeBorderColor = ACH:Color(L["Border Color"], nil, 21, true, nil, function(info) local t = E.db.fun.lines.top.right.cube.borderColor local d = P.fun.lines.top.right.cube.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.right.cube.borderColor = {} local t = E.db.fun.lines.top.right.cube.borderColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	top.args.right.args.cubeBackdropColor = ACH:Color(L["Backdrop Color"], nil, 22, true, nil, function(info) local t = E.db.fun.lines.top.right.cube.backdropColor local d = P.fun.lines.top.right.cube.backdropColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.top.right.cube.backdropColor = {} local t = E.db.fun.lines.top.right.cube.backdropColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+
+	--* Tukui Bottom Lines
+	local bottom = ACH:Group('|cffFF8000Bottom|r Lines', nil, 99, 'tab', function(info) return E.db.fun.lines[info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	Options.args.bottom = bottom
+	bottom.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	bottom.args.spacer = ACH:Spacer(1, 'full')
+
+	bottom.args.horizontal = ACH:Group(L["Horizontal"], nil, 14, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	bottom.args.horizontal.inline = true
+	bottom.args.horizontal.args.yOffset = ACH:Range(L["yOffset"], L["This will adjust the Horizontal line's distance from the edge of the screen."], 1, { min = 0, softMin = 0, softMax = 350, max = 750, step = 1 })
+	bottom.args.horizontal.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	bottom.args.horizontal.args.spacer1 = ACH:Spacer(4, 'full')
+	bottom.args.horizontal.args.borderColor = ACH:Color(L["Border Color"], nil, 14, true, nil, function(info) local t = E.db.fun.lines.bottom.horizontal[info[#info]] local d = P.fun.lines.bottom.horizontal[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.horizontal[info[#info]] = {} local t = E.db.fun.lines.bottom.horizontal[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.horizontal.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 14, true, nil, function(info) local t = E.db.fun.lines.bottom.horizontal[info[#info]] local d = P.fun.lines.bottom.horizontal[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.horizontal[info[#info]] = {} local t = E.db.fun.lines.bottom.horizontal[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+
+	bottom.args.left = ACH:Group(L["Left"], nil, 15, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	bottom.args.left.inline = true
+	bottom.args.left.args.xOffset = ACH:Range(L["xOffset"], format(L["This will adjust the %s vertical line's distance from the edge of the screen, which determines the length of the horizontal line as well."], L["Left"]), 1, { softMin = 0, min = 0, softMax = 350, max = 750, step = 1 })
+	bottom.args.left.args.length = ACH:Range(L["Length"], nil, 2, { softMin = 5, min = 2, softMax = 250, max = 500, step = 1 })
+	bottom.args.left.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	bottom.args.left.args.spacer1 = ACH:Spacer(4, 'full')
+	bottom.args.left.args.header1 = ACH:Header(L["Line Color"], 15)
+	bottom.args.left.args.borderColor = ACH:Color(L["Border Color"], nil, 16, true, nil, function(info) local t = E.db.fun.lines.bottom.left[info[#info]] local d = P.fun.lines.bottom.left[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.left[info[#info]] = {} local t = E.db.fun.lines.bottom.left[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.left.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 17, true, nil, function(info) local t = E.db.fun.lines.bottom.left[info[#info]] local d = P.fun.lines.bottom.left[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.left[info[#info]] = {} local t = E.db.fun.lines.bottom.left[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.left.args.header2 = ACH:Header(L["Cube Color"], 20)
+	bottom.args.left.args.cubeBorderColor = ACH:Color(L["Border Color"], nil, 21, true, nil, function(info) local t = E.db.fun.lines.bottom.left.cube.borderColor local d = P.fun.lines.bottom.left.cube.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.left.cube.borderColor = {} local t = E.db.fun.lines.bottom.left.cube.borderColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.left.args.cubeBackdropColor = ACH:Color(L["Backdrop Color"], nil, 22, true, nil, function(info) local t = E.db.fun.lines.bottom.left.cube.backdropColor local d = P.fun.lines.bottom.left.cube.backdropColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.left.cube.backdropColor = {} local t = E.db.fun.lines.bottom.left.cube.backdropColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+
+	bottom.args.right = ACH:Group(L["Right"], nil, 16, nil, function(info) return E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] end, function(info, value) E.db.fun.lines[info[#info-2]][info[#info-1]][info[#info]] = value FUN:UpdateOptions() end)
+	bottom.args.right.inline = true
+	bottom.args.right.args.xOffset = ACH:Range(L["xOffset"], format(L["This will adjust the %s vertical line's distance from the edge of the screen, which determines the length of the horizontal line as well."], L["Right"]), 1, { min = -750, softMin = -350, softMax = 0, max = 0, step = 1 })
+	bottom.args.right.args.length = ACH:Range(L["Length"], nil, 2, { softMin = 5, min = 2, softMax = 250, max = 500, step = 1 })
+	bottom.args.right.args.width = ACH:Range(L["Width"], L["Determines the thickness of the line."], 3, { softMin = 2, min = 2, softMax = 50, max = 100, step = 1 })
+	bottom.args.right.args.spacer1 = ACH:Spacer(4, 'full')
+	bottom.args.right.args.header1 = ACH:Header(L["Line Color"], 15)
+	bottom.args.right.args.borderColor = ACH:Color(L["Border Color"], nil, 16, true, nil, function(info) local t = E.db.fun.lines.bottom.right[info[#info]] local d = P.fun.lines.bottom.right[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.right[info[#info]] = {} local t = E.db.fun.lines.bottom.right[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.right.args.backdropColor = ACH:Color(L["Backdrop Color"], nil, 17, true, nil, function(info) local t = E.db.fun.lines.bottom.right[info[#info]] local d = P.fun.lines.bottom.right[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.right[info[#info]] = {} local t = E.db.fun.lines.bottom.right[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.right.args.header2 = ACH:Header(L["Cube Color"], 20)
+	bottom.args.right.args.cubeBorderColor = ACH:Color(L["Border Color"], nil, 21, true, nil, function(info) local t = E.db.fun.lines.bottom.right.cube.borderColor local d = P.fun.lines.bottom.right.cube.borderColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.right.cube.borderColor = {} local t = E.db.fun.lines.bottom.right.cube.borderColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
+	bottom.args.right.args.cubeBackdropColor = ACH:Color(L["Backdrop Color"], nil, 22, true, nil, function(info) local t = E.db.fun.lines.bottom.right.cube.backdropColor local d = P.fun.lines.bottom.right.cube.backdropColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) E.db.fun.lines.bottom.right.cube.backdropColor = {} local t = E.db.fun.lines.bottom.right.cube.backdropColor t.r, t.g, t.b, t.a = r, g, b, a FUN:UpdateOptions() end)
 
 	local Help = ACH:Group(L["Help"], nil, 99, nil, nil, nil, false)
 	fun.args.help = Help
