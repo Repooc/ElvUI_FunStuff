@@ -108,6 +108,19 @@ local function UpdateClassColorEntries()
 	E:UpdateClassColor(E.db.fun.lines.top.right.backdropColor)
 	E:UpdateClassColor(E.db.fun.lines.top.right.cube.borderColor)
 	E:UpdateClassColor(E.db.fun.lines.top.right.cube.backdropColor)
+
+	E:UpdateClassColor(E.db.fun.lines.bottom.horizontal.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.horizontal.backdropColor)
+
+	E:UpdateClassColor(E.db.fun.lines.bottom.left.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.left.backdropColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.left.cube.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.left.cube.backdropColor)
+
+	E:UpdateClassColor(E.db.fun.lines.bottom.right.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.right.backdropColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.right.cube.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.bottom.right.cube.backdropColor)
 end
 
 function FUN:Initialize()
