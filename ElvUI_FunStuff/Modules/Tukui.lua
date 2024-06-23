@@ -744,7 +744,7 @@ local function CreateBottomLines()
 	LeftVerticalLine:SetFrameStrata('BACKGROUND')
 	LeftVerticalLine:SetAlpha(1)
 	-- LeftVerticalLine:CreateShadow(2)
-	FUN.lines.top.LeftVerticalLine = LeftVerticalLine
+	FUN.lines.bottom.LeftVerticalLine = LeftVerticalLine
 
 	local LeftCube = CreateFrame('Frame', nil, LeftVerticalLine)
 	LeftCube:SetTemplate(nil, nil, true)
@@ -764,7 +764,7 @@ local function CreateBottomLines()
 	RightVerticalLine:SetFrameStrata('BACKGROUND')
 	RightVerticalLine:SetAlpha(1)
 	-- RightVerticalLine:CreateShadow(2)
-	FUN.lines.top.RightVerticalLine = RightVerticalLine
+	FUN.lines.bottom.RightVerticalLine = RightVerticalLine
 
 	local RightCube = CreateFrame('Frame', nil, RightVerticalLine)
 	RightCube:SetTemplate(nil, nil, true)
