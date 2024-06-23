@@ -16,7 +16,7 @@ local sharedValues = {
 		backdropColor = {r = 0, g = 0, b = 0, a = 1},
 		cube = {
 			borderColor = {r = 0, g = 0, b = 0, a = 1},
-			backdropColor = {r = 0, g = 1, b = .59},
+			backdropColor = {r = 0.36, g = 0.36, b = 0.36, a = 1},
 		},
 	},
 	right = {
@@ -27,7 +27,7 @@ local sharedValues = {
 		backdropColor = {r = 0, g = 0, b = 0, a = 1},
 		cube = {
 			borderColor = {r = 0, g = 0, b = 0, a = 1},
-			backdropColor = {r = 0, g = 1, b = .59},
+			backdropColor = {r = 0.36, g = 0.36, b = 0.36, a = 1},
 		},
 	},
 }
