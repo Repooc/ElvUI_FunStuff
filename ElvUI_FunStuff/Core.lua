@@ -95,11 +95,27 @@ local function VersionCheck()
 	end
 end
 
+local function UpdateClassColorEntries()
+	E:UpdateClassColor(E.db.fun.lines.top.horizontal.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.top.horizontal.backdropColor)
+
+	E:UpdateClassColor(E.db.fun.lines.top.left.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.top.left.backdropColor)
+	E:UpdateClassColor(E.db.fun.lines.top.left.cube.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.top.left.cube.backdropColor)
+
+	E:UpdateClassColor(E.db.fun.lines.top.right.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.top.right.backdropColor)
+	E:UpdateClassColor(E.db.fun.lines.top.right.cube.borderColor)
+	E:UpdateClassColor(E.db.fun.lines.top.right.cube.backdropColor)
+end
+
 function FUN:Initialize()
 	if VersionCheck() then return end
 
 	EP:RegisterPlugin(AddOnName, GetOptions)
 	LoadCommands()
+	UpdateClassColorEntries()
 
 	FUN:InitializeHelloKitty()
 	FUN:InitializeTukui()
