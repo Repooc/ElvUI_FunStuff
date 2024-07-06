@@ -1,6 +1,86 @@
 local E, _, _, P = unpack(ElvUI)
+local LCG = E.Libs.CustomGlow
+
 local FUN = E:GetModule('ElvUI_FunStuff')
-FUN.lines = {}
+FUN.lines = {
+	top = {},
+	bottom = {},
+}
+
+local function VerifyColorTable(data)
+	if data.r > 1 or data.r < 0 then data.r = 1 end
+	if data.g > 1 or data.g < 0 then data.g = 1 end
+	if data.b > 1 or data.b < 0 then data.b = 1 end
+	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
+end
+
+local function GetColorTable(data)
+	if not data.r or not data.g or not data.b then
+		error('GetColorTable: Could not unpack color values.')
+	end
+
+	VerifyColorTable(data)
+
+	local r, g, b, a = data.r, data.g, data.b, data.a
+	return { r, g, b, a }
+end
+
+local MixinTable = {}
+do
+	local frames, proc = {}, { xOffset = 3, yOffset = 3 }
+	function MixinTable:ShowGlow()
+		local line = self.line
+		local db = self.db[line].customGlow
+
+		local style = db.useStyle and db.style or self.db.customGlow.style
+		local glow = LCG.startList[style]
+
+		if glow then
+			local color = db.useColor and db.color or self.db.customGlow.color
+
+			local checkedColor = GetColorTable(color)
+
+			if style == 'Proc Glow' then -- this uses an options table
+				proc.color = checkedColor
+				proc.duration = db.duration
+				proc.startAnim = db.startAnimation
+				proc.frameLevel = db.frameLevel
+
+				glow(self, proc)
+			else
+				local pixel, cast = style == 'Pixel Glow', style == 'Autocast Shine'
+				local arg3, arg4, arg6, arg9, arg11
+
+				if pixel or cast then arg3, arg4 = db.lines, db.speed else arg3 = db.speed end
+				if pixel then arg6, arg11 = db.size, db.frameLevel elseif cast then arg9 = db.frameLevel end
+
+				glow(self, checkedColor, arg3, arg4, nil, arg6, nil, nil, arg9, nil, arg11)
+			end
+
+			frames[self] = true
+		end
+	end
+
+	function MixinTable:HideGlow(style)
+		local line = self.line
+		local db = self.db[line].customGlow
+		style = style or db.useStyle and db.style or self.db.customGlow.style
+
+		local glow = LCG.stopList[style]
+
+		if glow then
+			glow(self)
+
+			frames[self] = nil
+		end
+	end
+
+	function FUN:StopAllGlows()
+		for button in next, frames do
+			button:HideGlow()
+		end
+	end
+end
 
 function FUN:SetupTukuiProfile(newProfile)
 	if newProfile then
@@ -619,196 +699,130 @@ local function CreateBottomTukuiPanels()
 end
 CreateBottomTukuiPanels()
 
-local function CreateTopLines()
-	if FUN.lines.top then return end
+local function CreateLines(which)
+	if not which then return end
+	if FUN.lines[which].horizontal then return end
 
-	local db = E.db.fun.lines.top
-	local horizontal = db.horizontal
-	local left = db.left
-	local right = db.right
+	local db = E.db.fun.lines[which]
+	local isTop = which == 'top'
+	local leftOffset = db.left.xOffset and (db.left.xOffset >= 0 and db.left.xOffset or -db.left.xOffset) or -18
+	local rightOffset = db.right.xOffset and (db.right.xOffset <= 0 and db.right.xOffset or -db.right.xOffset) or -18
+	local yOffset = db.horizontal.yOffset and ((isTop and db.horizontal.yOffset <= 0) or (not isTop and db.horizontal.yOffset >= 0)) and db.horizontal.yOffset or -db.horizontal.yOffset or (isTop and -30 or 30)
 
-	local leftOffset = left.xOffset and (left.xOffset >= 0 and left.xOffset or -left.xOffset) or -18
-	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
-	local yOffset = horizontal.yOffset and (horizontal.yOffset <= 0 and horizontal.yOffset or -horizontal.yOffset) or -30
-	local TopLine = CreateFrame('Frame', nil, E.UIParent)
-	TopLine:SetTemplate(nil, nil, true)
-	TopLine:SetSize(2, horizontal.width or 2)
-	TopLine:Point('TOPLEFT', leftOffset, yOffset)
-	TopLine:Point('TOPRIGHT', rightOffset, yOffset)
-	TopLine:SetFrameStrata('BACKGROUND')
-	TopLine:SetFrameLevel(0)
-	FUN.lines.top = TopLine
-	-- TukuiTopLine:CreateShadow(2)
+	local line = FUN.lines[which]
+	local Horizontal = CreateFrame('Frame', nil, E.UIParent)
+	Horizontal:SetTemplate(nil, nil, true)
+	Horizontal:SetSize(2, db.horizontal.width or 2)
+	Horizontal:Point(isTop and 'TOPLEFT' or 'BOTTOMLEFT', leftOffset, yOffset)
+	Horizontal:Point(isTop and 'TOPRIGHT' or 'BOTTOMRIGHT', rightOffset, yOffset)
+	Horizontal:SetFrameStrata('BACKGROUND')
+	Horizontal:SetFrameLevel(0)
+	Horizontal.line = 'horizontal'
+	line.horizontal = Horizontal
+	Mixin(Horizontal, MixinTable)
+	-- Horizontal:CreateShadow(2)
 
-	local LeftVerticalLine = CreateFrame('Frame', nil, TopLine)
-	LeftVerticalLine:SetTemplate(nil, nil, true)
-	LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
-	LeftVerticalLine:Point('TOPRIGHT', TopLine, 'TOPLEFT', 0, 0)
-	LeftVerticalLine:SetFrameLevel(0)
-	LeftVerticalLine:SetFrameStrata('BACKGROUND')
-	LeftVerticalLine:SetAlpha(1)
-	-- LeftVerticalLine:CreateShadow(2)
-	FUN.lines.top.LeftVerticalLine = LeftVerticalLine
+	local LeftLine = CreateFrame('Frame', nil, Horizontal)
+	LeftLine:SetTemplate(nil, nil, true)
+	LeftLine:SetSize(db.left.width or 2, db.left.length or 180)
+	LeftLine:Point(isTop and 'TOPRIGHT' or 'BOTTOMRIGHT', Horizontal, isTop and 'TOPLEFT' or 'BOTTOMLEFT', 0, 0)
+	LeftLine:SetFrameLevel(0)
+	LeftLine:SetFrameStrata('BACKGROUND')
+	LeftLine:SetAlpha(1)
+	LeftLine.line = 'left'
+	line.left = LeftLine
+	Mixin(LeftLine, MixinTable)
+	-- LeftLine:CreateShadow(2)
 
-	local LeftCube = CreateFrame('Frame', nil, LeftVerticalLine)
+	local LeftCube = CreateFrame('Frame', 'nil', LeftLine)
 	LeftCube:SetTemplate(nil, nil, true)
 	LeftCube:SetSize(10, 10)
-	LeftCube:Point('TOP', LeftVerticalLine, 'BOTTOM', 0, E.PixelMode and 0 or E.Border)
+	LeftCube:Point(isTop and 'TOP' or 'BOTTOM', LeftLine, isTop and 'BOTTOM' or 'TOP', 0, E.PixelMode and 0 or E.Border)
 	LeftCube:EnableMouse(true)
 	LeftCube:SetFrameLevel(0)
+	LeftCube.line = 'left'
+	line.left.cube = LeftCube
 	-- LeftCube:CreateShadow(2)
-	LeftVerticalLine.LeftCube = LeftCube
-	TopLine.LeftVerticalLine = LeftVerticalLine
 
-	local RightVerticalLine = CreateFrame('Frame', nil, TopLine)
-	RightVerticalLine:SetTemplate(nil, nil, true)
-	RightVerticalLine:SetSize(right.width or 2, right.length or 180)
-	RightVerticalLine:Point('TOPLEFT', TopLine, 'TOPRIGHT', 0, 0)
-	RightVerticalLine:SetFrameLevel(0)
-	RightVerticalLine:SetFrameStrata('BACKGROUND')
-	RightVerticalLine:SetAlpha(1)
-	-- RightVerticalLine:CreateShadow(2)
-	FUN.lines.top.RightVerticalLine = RightVerticalLine
+	local RightLine = CreateFrame('Frame', nil, Horizontal)
+	RightLine:SetTemplate(nil, nil, true)
+	RightLine:SetSize(db.right.width or 2, db.right.length or 180)
+	RightLine:Point(isTop and 'TOPLEFT' or 'BOTTOMLEFT', Horizontal, isTop and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
+	RightLine:SetFrameLevel(0)
+	RightLine:SetFrameStrata('BACKGROUND')
+	RightLine:SetAlpha(1)
+	RightLine.line = 'right'
+	line.right = RightLine
+	Mixin(RightLine, MixinTable)
+	-- RightLine:CreateShadow(2)
 
-	local RightCube = CreateFrame('Frame', nil, RightVerticalLine)
+	local RightCube = CreateFrame('Frame', nil, RightLine)
 	RightCube:SetTemplate(nil, nil, true)
 	RightCube:SetSize(10, 10)
-	RightCube:Point('TOP', RightVerticalLine, 'BOTTOM', 0, E.PixelMode and 0 or E.Border)
+	RightCube:Point(isTop and 'TOP' or 'BOTTOM', RightLine, isTop and 'BOTTOM' or 'TOP', 0, E.PixelMode and 0 or E.Border)
 	RightCube:EnableMouse(true)
 	RightCube:SetFrameLevel(0)
+	RightCube.line = 'right'
+	line.right.cube = RightCube
 	-- RightCube:CreateShadow(2)
-	RightVerticalLine.RightCube = RightCube
-	TopLine.RightVerticalLine = RightVerticalLine
 end
 
-function FUN:UpdateTopLines()
-	if not FUN.lines.top then CreateTopLines() end
-	local db = E.db.fun.lines.top
-	local horizontal = db.horizontal
-	local left = db.left
-	local right = db.right
+function FUN:UpdateLines(which)
+	if not which then return end
 
-	local leftOffset = left.xOffset and (left.xOffset >= 0 and left.xOffset or -left.xOffset) or -18
-	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
-	local yOffset = horizontal.yOffset and (horizontal.yOffset <= 0 and horizontal.yOffset or -horizontal.yOffset) or -30
+	if not FUN.lines[which].horizontal then CreateLines(which) end
+	local db = E.db.fun.lines[which]
+	local isTop = which == 'top'
+	local leftOffset = db.left.xOffset and (db.left.xOffset >= 0 and db.left.xOffset or -db.left.xOffset) or -18
+	local rightOffset = db.right.xOffset and (db.right.xOffset <= 0 and db.right.xOffset or -db.right.xOffset) or -18
+	local yOffset = db.horizontal.yOffset and ((isTop and db.horizontal.yOffset <= 0) or (not isTop and db.horizontal.yOffset >= 0)) and db.horizontal.yOffset or -db.horizontal.yOffset or (isTop and -30 or 30)
+	local lines = FUN.lines[which]
 
-	local TopLine = FUN.lines.top
-	TopLine:ClearAllPoints()
-	TopLine:Point('TOPLEFT', leftOffset, yOffset)
-	TopLine:Point('TOPRIGHT', rightOffset, yOffset)
-	TopLine:SetSize(2, horizontal.width or 2)
-	TopLine:SetBackdropBorderColor(horizontal.borderColor.r, horizontal.borderColor.g, horizontal.borderColor.b, horizontal.borderColor.a)
-	TopLine:SetBackdropColor(horizontal.backdropColor.r, horizontal.backdropColor.g, horizontal.backdropColor.b, horizontal.backdropColor.a)
+	lines.db = db
+	lines.horizontal:ClearAllPoints()
+	lines.horizontal:Point(isTop and 'TOPLEFT' or 'BOTTOMLEFT', leftOffset, yOffset)
+	lines.horizontal:Point(isTop and 'TOPRIGHT' or 'BOTTOMRIGHT', rightOffset, yOffset)
+	lines.horizontal:SetSize(2, db.horizontal.width or 2)
+	lines.horizontal:SetBackdropBorderColor(db.horizontal.borderColor.r, db.horizontal.borderColor.g, db.horizontal.borderColor.b, db.horizontal.borderColor.a)
+	lines.horizontal:SetBackdropColor(db.horizontal.backdropColor.r, db.horizontal.backdropColor.g, db.horizontal.backdropColor.b, db.horizontal.backdropColor.a)
+	lines.horizontal.db = db
+	if db.horizontal.useCustomGlow then
+		lines.horizontal:ShowGlow()
+	else
+		lines.horizontal:HideGlow()
+	end
 
-	TopLine.LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
-	TopLine.LeftVerticalLine:SetBackdropBorderColor(left.borderColor.r, left.borderColor.g, left.borderColor.b, left.borderColor.a)
-	TopLine.LeftVerticalLine:SetBackdropColor(left.backdropColor.r, left.backdropColor.g, left.backdropColor.b, left.backdropColor.a)
-	TopLine.LeftVerticalLine.LeftCube:SetBackdropBorderColor(left.cube.borderColor.r, left.cube.borderColor.g, left.cube.borderColor.b, left.cube.borderColor.a)
-	TopLine.LeftVerticalLine.LeftCube:SetBackdropColor(left.cube.backdropColor.r, left.cube.backdropColor.g, left.cube.backdropColor.b, left.cube.backdropColor.a)
+	lines.left:SetSize(db.left.width or 2, db.left.length or 180)
+	lines.left:SetBackdropBorderColor(db.left.borderColor.r, db.left.borderColor.g, db.left.borderColor.b, db.left.borderColor.a)
+	lines.left:SetBackdropColor(db.left.backdropColor.r, db.left.backdropColor.g, db.left.backdropColor.b, db.left.backdropColor.a)
+	lines.left.db = db
+	if db.left.useCustomGlow then
+		lines.left:ShowGlow()
+	else
+		lines.left:HideGlow()
+	end
 
-	TopLine.RightVerticalLine:SetSize(right.width or 2, right.length or 180)
-	TopLine.RightVerticalLine:SetBackdropBorderColor(right.borderColor.r, right.borderColor.g, right.borderColor.b, right.borderColor.a)
-	TopLine.RightVerticalLine:SetBackdropColor(right.backdropColor.r, right.backdropColor.g, right.backdropColor.b, right.backdropColor.a)
-	TopLine.RightVerticalLine.RightCube:SetBackdropBorderColor(right.cube.borderColor.r, right.cube.borderColor.g, right.cube.borderColor.b, right.cube.borderColor.a)
-	TopLine.RightVerticalLine.RightCube:SetBackdropColor(right.cube.backdropColor.r, right.cube.backdropColor.g, right.cube.backdropColor.b, right.cube.backdropColor.a)
+	lines.left.cube:SetSize(db.left.cube.size, db.left.cube.size)
+	lines.left.cube:SetBackdropBorderColor(db.left.cube.borderColor.r, db.left.cube.borderColor.g, db.left.cube.borderColor.b, db.left.cube.borderColor.a)
+	lines.left.cube:SetBackdropColor(db.left.cube.backdropColor.r, db.left.cube.backdropColor.g, db.left.cube.backdropColor.b, db.left.cube.backdropColor.a)
+	lines.left.cube.db = db
 
-	TopLine:SetShown(db.enable)
-end
+	lines.right:SetSize(db.right.width or 2, db.right.length or 180)
+	lines.right:SetBackdropBorderColor(db.right.borderColor.r, db.right.borderColor.g, db.right.borderColor.b, db.right.borderColor.a)
+	lines.right:SetBackdropColor(db.right.backdropColor.r, db.right.backdropColor.g, db.right.backdropColor.b, db.right.backdropColor.a)
+	lines.right.db = db
+	if db.right.useCustomGlow then
+		lines.right:ShowGlow()
+	else
+		lines.right:HideGlow()
+	end
 
-local function CreateBottomLines()
-	if FUN.lines.bottom then return end
+	lines.right.cube:SetSize(db.right.cube.size, db.right.cube.size)
+	lines.right.cube:SetBackdropBorderColor(db.right.cube.borderColor.r, db.right.cube.borderColor.g, db.right.cube.borderColor.b, db.right.cube.borderColor.a)
+	lines.right.cube:SetBackdropColor(db.right.cube.backdropColor.r, db.right.cube.backdropColor.g, db.right.cube.backdropColor.b, db.right.cube.backdropColor.a)
+	lines.right.cube.db = db
 
-	local db = E.db.fun.lines.bottom
-	local horizontal = db.horizontal
-	local left = db.left
-	local right = db.right
-
-	local leftOffset = left.xOffset and (left.xOffset >= 0 and left.xOffset or -left.xOffset) or -18
-	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
-	local yOffset = horizontal.yOffset and (horizontal.yOffset >= 0 and horizontal.yOffset or -horizontal.yOffset) or 30
-	local BottomLine = CreateFrame('Frame', nil, E.UIParent)
-	BottomLine:SetTemplate(nil, nil, true)
-	BottomLine:SetSize(2, horizontal.width or 2)
-	BottomLine:Point('BOTTOMLEFT', leftOffset, yOffset)
-	BottomLine:Point('BOTTOMRIGHT', rightOffset, yOffset)
-	BottomLine:SetFrameStrata('BACKGROUND')
-	BottomLine:SetFrameLevel(0)
-	FUN.lines.bottom = BottomLine
-	-- BottomLine:CreateShadow(2)
-
-	local LeftVerticalLine = CreateFrame('Frame', nil, BottomLine)
-	LeftVerticalLine:SetTemplate(nil, nil, true)
-	LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
-	LeftVerticalLine:Point('BOTTOMRIGHT', BottomLine, 'BOTTOMLEFT', 0, 0)
-	LeftVerticalLine:SetFrameLevel(0)
-	LeftVerticalLine:SetFrameStrata('BACKGROUND')
-	LeftVerticalLine:SetAlpha(1)
-	-- LeftVerticalLine:CreateShadow(2)
-	FUN.lines.bottom.LeftVerticalLine = LeftVerticalLine
-
-	local LeftCube = CreateFrame('Frame', nil, LeftVerticalLine)
-	LeftCube:SetTemplate(nil, nil, true)
-	LeftCube:SetSize(10, 10)
-	LeftCube:Point('BOTTOM', LeftVerticalLine, 'TOP', 0, E.PixelMode and 0 or E.Border)
-	LeftCube:EnableMouse(true)
-	LeftCube:SetFrameLevel(0)
-	-- LeftCube:CreateShadow(2)
-	LeftVerticalLine.LeftCube = LeftCube
-	BottomLine.LeftVerticalLine = LeftVerticalLine
-
-	local RightVerticalLine = CreateFrame('Frame', nil, BottomLine)
-	RightVerticalLine:SetTemplate(nil, nil, true)
-	RightVerticalLine:SetSize(right.width or 2, right.length or 180)
-	RightVerticalLine:Point('BOTTOMLEFT', BottomLine, 'BOTTOMRIGHT', 0, 0)
-	RightVerticalLine:SetFrameLevel(0)
-	RightVerticalLine:SetFrameStrata('BACKGROUND')
-	RightVerticalLine:SetAlpha(1)
-	-- RightVerticalLine:CreateShadow(2)
-	FUN.lines.bottom.RightVerticalLine = RightVerticalLine
-
-	local RightCube = CreateFrame('Frame', nil, RightVerticalLine)
-	RightCube:SetTemplate(nil, nil, true)
-	RightCube:SetSize(10, 10)
-	RightCube:Point('BOTTOM', RightVerticalLine, 'TOP', 0, E.PixelMode and 0 or E.Border)
-	RightCube:EnableMouse(true)
-	RightCube:SetFrameLevel(0)
-	-- RightCube:CreateShadow(2)
-	RightVerticalLine.RightCube = RightCube
-	BottomLine.RightVerticalLine = RightVerticalLine
-end
-
-function FUN:UpdateBottomLines()
-	if not FUN.lines.bottom then CreateBottomLines() end
-	local db = E.db.fun.lines.bottom
-	local horizontal = db.horizontal
-	local left = db.left
-	local right = db.right
-
-	local leftOffset = left.xOffset and (left.xOffset >= 0 and left.xOffset or -left.xOffset) or -18
-	local rightOffset = right.xOffset and (right.xOffset <= 0 and right.xOffset or -right.xOffset) or -18
-	local yOffset = horizontal.yOffset and (horizontal.yOffset >= 0 and horizontal.yOffset or -horizontal.yOffset) or 30
-
-	local BottomLine = FUN.lines.bottom
-	BottomLine:ClearAllPoints()
-	BottomLine:Point('BOTTOMLEFT', leftOffset, yOffset)
-	BottomLine:Point('BOTTOMRIGHT', rightOffset, yOffset)
-	BottomLine:SetSize(2, horizontal.width or 2)
-	BottomLine:SetBackdropBorderColor(horizontal.borderColor.r, horizontal.borderColor.g, horizontal.borderColor.b, horizontal.borderColor.a)
-	BottomLine:SetBackdropColor(horizontal.backdropColor.r, horizontal.backdropColor.g, horizontal.backdropColor.b, horizontal.backdropColor.a)
-
-	BottomLine.LeftVerticalLine:SetSize(left.width or 2, left.length or 180)
-	BottomLine.LeftVerticalLine:SetBackdropBorderColor(left.borderColor.r, left.borderColor.g, left.borderColor.b, left.borderColor.a)
-	BottomLine.LeftVerticalLine:SetBackdropColor(left.backdropColor.r, left.backdropColor.g, left.backdropColor.b, left.backdropColor.a)
-	BottomLine.LeftVerticalLine.LeftCube:SetBackdropBorderColor(left.cube.borderColor.r, left.cube.borderColor.g, left.cube.borderColor.b, left.cube.borderColor.a)
-	BottomLine.LeftVerticalLine.LeftCube:SetBackdropColor(left.cube.backdropColor.r, left.cube.backdropColor.g, left.cube.backdropColor.b, left.cube.backdropColor.a)
-
-	BottomLine.RightVerticalLine:SetSize(right.width or 2, right.length or 180)
-	BottomLine.RightVerticalLine:SetBackdropBorderColor(right.borderColor.r, right.borderColor.g, right.borderColor.b, right.borderColor.a)
-	BottomLine.RightVerticalLine:SetBackdropColor(right.backdropColor.r, right.backdropColor.g, right.backdropColor.b, right.backdropColor.a)
-	BottomLine.RightVerticalLine.RightCube:SetBackdropBorderColor(right.cube.borderColor.r, right.cube.borderColor.g, right.cube.borderColor.b, right.cube.borderColor.a)
-	BottomLine.RightVerticalLine.RightCube:SetBackdropColor(right.cube.backdropColor.r, right.cube.backdropColor.g, right.cube.backdropColor.b, right.cube.backdropColor.a)
-
-	BottomLine:SetShown(db.enable)
+	lines.horizontal:SetShown(db.enable)
 end
 
 function FUN:UpdateTukuiPanels()
@@ -820,6 +834,4 @@ function FUN:InitializeTukui()
 	if not E.db.fun.tukui.enable then return end
 	FUN:Print("|cffFF8000Tukui|r: |cff00FF00Enabled|r")
 	FUN:UpdateTukuiPanels()
-	FUN:UpdateTopLines()
-	FUN:UpdateBottomLines()
 end

@@ -2,7 +2,7 @@ local E, L = unpack(ElvUI)
 local EP = LibStub('LibElvUIPlugin-1.0')
 local AddOnName, Engine = ...
 
-local FUN = E:NewModule(AddOnName, 'AceHook-3.0')
+local FUN = E:NewModule(AddOnName, 'AceHook-3.0', 'AceEvent-3.0')
 _G[AddOnName] = Engine
 FUN.Version = GetAddOnMetadata('ElvUI_FunStuff', 'Version')
 FUN.Configs = {}
@@ -82,10 +82,11 @@ local function LoadCommands()
 end
 
 function FUN:UpdateOptions()
+	FUN.db = E.db.fun
 	FUN:UpdateDancingKittys()
 	FUN:UpdateTukuiPanels()
-	FUN:UpdateTopLines()
-	FUN:UpdateBottomLines()
+	FUN:UpdateLines('top')
+	FUN:UpdateLines('bottom')
 end
 
 local function VersionCheck()
