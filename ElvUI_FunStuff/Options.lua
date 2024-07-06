@@ -157,7 +157,7 @@ local function GetOptionsTable_Lines(name, which, order)
 	if not which or not E.db.fun.lines[which] then return end
 	local db = E.db.fun.lines[which]
 	--* Tukui Top Lines
-	local config = ACH:Group(name, nil, order, 'tab', function(info) return db[info[#info]] end, function(info, value) FUN:StopAllGlows() db[info[#info]] = value FUN:UpdateOptions() end, function(info) if info[#info] ~= 'top' or info[#info] ~= 'bottom' then return not db.enable end end)
+	local config = ACH:Group(name, nil, order, 'tab', function(info) return db[info[#info]] end, function(info, value) FUN:StopAllGlows() db[info[#info]] = value FUN:UpdateOptions() end, function(info) if info[#info] == 'lines' or info[#info] == 'top' or info[#info] == 'bottom' then return false else return not db.enable end end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, function() return false end)
 	config.args.spacer = ACH:Spacer(1, 'full')
