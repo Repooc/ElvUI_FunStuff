@@ -44,7 +44,7 @@ local sharedValues = {
 		cube = {
 			width = 10,
 			height = 10,
-			size = 6,
+			size = 10,
 			borderColor = {r = 0, g = 0, b = 0, a = 1},
 			backdropColor = {r = 0.36, g = 0.36, b = 0.36, a = 1},
 			useCustomGlow = false,
