@@ -6,6 +6,10 @@ local module = E:NewModule('FunStuff-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.12 7/25/2024',
+		"• bump toc",
+		"• add some custom glow options to the custom lines",
+	' ',
 	'v1.11 6/24/2024',
 		"• toc bump",
 		"• Added 2 New Sets of \"Tukui style lines\", they are Top and Bottom, these are separate from \"Show Tukui Bars\" option",

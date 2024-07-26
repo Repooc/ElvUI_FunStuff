@@ -114,5 +114,11 @@ P.fun = {
 	},
 }
 P.fun.lines.top.horizontal.yOffset = -30
+P.fun.lines.top.left.length = 210
+P.fun.lines.top.right.length = 210
+
 P.fun.lines.bottom.horizontal.yOffset = 30
+P.fun.lines.bottom.left.length = 215
+P.fun.lines.bottom.right.length = 215
+
 V.fun = {} --* Specifically here to E.private.fun.install_complate check in Core.lua doesn't error.
