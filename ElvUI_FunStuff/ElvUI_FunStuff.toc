@@ -1,9 +1,9 @@
-﻿## Interface: 110000
+﻿## Interface: 110002
 ## Interface-Cata: 40400
 ## Interface-Classic: 11503
 ## Title: |cff1784d1ElvUI|r |cff00FF98Fun|r|cffA330C9Stuff|r
 ## Author: Repooc
-## Version: 1.12
+## Version: 1.13
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: FUNDB

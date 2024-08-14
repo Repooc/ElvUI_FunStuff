@@ -4,6 +4,9 @@ local AddOnName, Engine = ...
 
 local FUN = E:NewModule(AddOnName, 'AceHook-3.0', 'AceEvent-3.0')
 _G[AddOnName] = Engine
+
+local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+
 FUN.Version = GetAddOnMetadata('ElvUI_FunStuff', 'Version')
 FUN.Configs = {}
 FUN.RequiredVersion = 12.90
