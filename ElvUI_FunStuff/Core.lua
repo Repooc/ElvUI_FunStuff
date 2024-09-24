@@ -7,9 +7,21 @@ _G[AddOnName] = Engine
 
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
-FUN.Version = GetAddOnMetadata('ElvUI_FunStuff', 'Version')
 FUN.Configs = {}
-FUN.RequiredVersion = 12.90
+FUN.RequiredVersion = 13.78
+
+function FUN:ParseVersionString()
+	local version = GetAddOnMetadata(AddOnName, 'Version')
+	local prevVersion = GetAddOnMetadata(AddOnName, 'X-PreviousVersion')
+	if strfind(version, 'project%-version') then
+		return prevVersion, prevVersion..'-git', nil, true
+	else
+		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
+		return tonumber(release), release..extra, extra ~= ''
+	end
+end
+
+FUN.version, FUN.versionString, FUN.versionDev, FUN.versionGit = FUN:ParseVersionString()
 
 E.PopupDialogs.FUN_HARLEM_SHAKE = {
 	text = L["ElvUI needs to perform database optimizations please be patient."],
@@ -58,13 +70,13 @@ E.PopupDialogs.FUN_PROFILE_WARNING = {
 FUN.availLayouts = {
 	hellokitty = {
 		name = '|cffDF4CBCHello Kitty|r',
-		profileName = 'Hello Kitty v'..FUN.Version,
+		profileName = 'Hello Kitty v'..FUN.version,
 		newProfileFunc = FUN.SetupHelloKitty,
 		installMessage = '|cffDF4CBCHello Kitty|r: |cff00FF00'..L["Profile Imported"]..'|r'
 	},
 	tukui = {
 		name = '|cffFF8000Tukui|r',
-		profileName = 'Tukui v'..FUN.Version,
+		profileName = 'Tukui v'..FUN.version,
 		newProfileFunc = FUN.SetupTukuiProfile,
 		installMessage = '|cffff8000Tukui|r: |cff00FF00'..L["Profile Imported"]..'|r'
 	},

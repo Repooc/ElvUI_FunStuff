@@ -84,7 +84,7 @@ end
 
 function FUN:SetupTukuiProfile(newProfile)
 	if newProfile then
-		E.data:SetProfile('Tukui v'..FUN.Version)
+		E.data:SetProfile('Tukui v'..FUN.version)
 		E.db.convertPages = true
 	end
 

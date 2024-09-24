@@ -6,6 +6,9 @@ local module = E:NewModule('FunStuff-Changelog', 'AceEvent-3.0', 'AceTimer-3.0')
 local format, gsub, find = string.format, string.gsub, string.find
 
 local ChangelogTBL = {
+	'v1.14 9/24/2024',
+		"• bump toc",
+	' ',
 	'v1.13 8/13/2024',
 		"• bump toc",
 		"• fix old api in retail",
@@ -156,7 +159,7 @@ function module:CreateChangelog()
 	header.text = header:CreateFontString(nil, 'OVERLAY')
 	header.text:FontTemplate(nil, 15, 'OUTLINE')
 	header.text:SetHeight(header.text:GetStringHeight()+30)
-	header.text:SetText('ActionBar Masks - Changelog '..format('|cff00c0fa%s|r', FUN.Version))
+	header.text:SetText('ActionBar Masks - Changelog '..format('|cff00c0fa%s|r', FUN.versionString))
 	header.text:SetTextColor(1, 0.8, 0)
 	header.text:Point('CENTER', header, 0, -1)
 
@@ -172,7 +175,7 @@ function module:CreateChangelog()
 	close:SetText(CLOSE)
 	close:Size(80, 20)
 	close:SetScript('OnClick', function()
-		_G.FUNDB['Version'] = FUN.Version
+		_G.FUNDB['Version'] = FUN.version
 		frame:Hide()
 	end)
 	S:HandleButton(close)
@@ -223,7 +226,7 @@ end
 
 function module:CheckVersion()
 	if not InCombatLockdown() then
-		if not FUNDB['Version'] or (FUNDB['Version'] and FUNDB['Version'] ~= FUN.Version) then
+		if not FUNDB['Version'] or (FUNDB['Version'] and FUNDB['Version'] ~= FUN.version) then
 			module:ToggleChangeLog()
 		end
 	else

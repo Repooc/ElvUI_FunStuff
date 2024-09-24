@@ -41,7 +41,7 @@ end
 
 function FUN:SetupHelloKitty(newProfile)
 	if newProfile then
-		E.data:SetProfile('Hello Kitty v'..FUN.Version)
+		E.data:SetProfile('Hello Kitty v'..FUN.version)
 		E.db.convertPages = true
 		E.private.general.pixelPerfect = true
 		E.db.fun.tukui.enable = false

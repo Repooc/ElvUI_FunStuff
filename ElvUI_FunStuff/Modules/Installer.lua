@@ -7,7 +7,7 @@ local type = type
 local temp = {}
 
 local function InstallComplete()
-	E.private.fun.install_complete = FUN.Version
+	E.private.fun.install_complete = FUN.version
 	if GetCVarBool('Sound_EnableMusic') then StopMusic() end
 	ReloadUI()
 end
@@ -120,7 +120,7 @@ FUN.installTable = {
 
 			_G.PluginInstallFrame.SubTitle:SetText(strjoin('', '|cffFF3333', L["Read Before Clicking!!!"]))
 			if temp.layout and FUN.availLayouts[temp.layout] then
-				_G.PluginInstallFrame.Desc1:SetText(strjoin('', '|cffFFD100', format(L["You can choose to \"|cff1784d1Create New Profile|r\" which will create a new profile labeled as \"%s v|cff1784d1%s|r\"."], FUN.availLayouts[temp.layout].name, FUN.Version)))
+				_G.PluginInstallFrame.Desc1:SetText(strjoin('', '|cffFFD100', format(L["You can choose to \"|cff1784d1Create New Profile|r\" which will create a new profile labeled as \"%s v|cff1784d1%s|r\"."], FUN.availLayouts[temp.layout].name, FUN.version)))
 			else
 				_G.PluginInstallFrame.Desc1:SetText(strjoin('', '|cffFFD100', L["You can click the previous button below to go back and choose a layout/theme, or click continue without importing one."]))
 			end
