@@ -8,6 +8,7 @@ _G[AddOnName] = Engine
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 
 FUN.Configs = {}
+FUN.Title = GetAddOnMetadata(AddOnName, 'Title')
 FUN.RequiredVersion = 13.78
 
 function FUN:ParseVersionString()
