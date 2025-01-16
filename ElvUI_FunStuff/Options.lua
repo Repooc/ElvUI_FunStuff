@@ -208,7 +208,7 @@ local function configTable()
 	local rrp = E.Options.args.rrp
 
 	--* Plugin Section
-	local fun = ACH:Group('|cff00FF98Fun|r|cffA330C9Stuff|r', nil, 6, 'tab', nil, nil)
+	local fun = ACH:Group(gsub(FUN.Title, "^.-|r%s", ""), nil, 6, 'tab', nil, nil)
 	if not rrp then
 		print("Error Loading Repooc Reforged Plugin Library, make sure to download the addon from Wago AddOns or Curseforge instead of github!")
 		E.Options.args.fun = fun
