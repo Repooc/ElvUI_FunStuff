@@ -1,3 +1,3 @@
-v1.17 1/15/2025
+v1.18 2/27/2025
 
-• title adjustments in options
+• bump toc
