@@ -30,6 +30,10 @@ jobs:
       - name: Release Job
         id: releaseaddon
         uses: BigWigsMods/packager@master
+      - name: Run Netlify Deploy
+        if: success()
+        run: |
+          curl -X POST -d {} ${{ secrets.DEPLOY_REPOOC_ORG }}
       - name: Publish
         id: publish-to-discord
         uses: Crec0/announce-n-crosspost@v1
