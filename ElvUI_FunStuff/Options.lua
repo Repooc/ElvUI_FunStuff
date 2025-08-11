@@ -1,6 +1,5 @@
 local E, L, _, P = unpack(ElvUI)
 local FUN = E:GetModule('ElvUI_FunStuff')
-local FUNCL = E:GetModule('FunStuff-Changelog')
 local ACH = E.Libs.ACH
 local RRP = LibStub('RepoocReforged-1.0'):LoadMainCategory()
 
@@ -265,7 +264,6 @@ local function configTable()
 	Help.args.download = Download
 	Download.inline = true
 	Download.args.development = ACH:Execute(L["Development Version"], L["Link to the latest development version."], 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://github.com/Repooc/ElvUI_FunStuff/archive/refs/heads/main.zip') end, nil, nil, 140)
-	Download.args.changelog = ACH:Execute(L["Changelog"], nil, 3, function() if FUN_Changelog and FUN_Changelog:IsShown() then FUN:Print('ActionBar Masks changelog is already being displayed.') else FUNCL:ToggleChangeLog() end end, nil, nil, 140)
 
 	local Credits = ACH:Group(L["Credits"], nil, 5)
 	Help.args.credits = Credits

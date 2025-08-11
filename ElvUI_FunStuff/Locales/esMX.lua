@@ -38,7 +38,6 @@ L["You can choose to \"|cff1784d1Create New Profile|r\" which will create a new 
 L["You can click the previous button below to go back and choose a layout/theme, or click continue without importing one."] = true
 
 --! Do not translate as they are in ElvUI Locales already
--- L["Changelog"]
 -- L["Color"]
 -- L["Credits"]
 -- L["Disabled"]
