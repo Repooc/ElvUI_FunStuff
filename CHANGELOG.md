@@ -1,3 +1,3 @@
-v1.4 8/10/2025
+v1.5 1/18/2026
 
-• fixed changelog issues
+• toc bumps
