@@ -9,7 +9,7 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       CF_API_KEY: ${{ secrets.CF_API_KEY }}
       CF_URL: https://www.curseforge.com/wow/addons/fun-stuff-elvui-plugin
@@ -22,14 +22,19 @@ jobs:
       RR_ADDON_CHANNEL_URL: "https://discord.com/channels/1162274244487561216/1254246796830707743"
     steps:
       - name: Clone Project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 100
+      - name: Workaround checkout issues
+        run: |
+          git fetch --tags --force
       - name: Setup Environment
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Release Job
         id: releaseaddon
         uses: BigWigsMods/packager@master
+        with:
+          args: -n "{package-name}-{project-version}"
       - name: Run Netlify Deploy
         if: success()
         run: |
