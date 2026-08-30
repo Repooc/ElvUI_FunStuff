@@ -479,7 +479,7 @@ function FUN:SetupHelloKitty(newProfile)
 	-- PlayMusic(E.Media.Sounds.HelloKitty)
 	-- E:StaticPopup_Show('HELLO_KITTY_END')
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 	FUN:Print(L["Profile has been setup and loaded."])
 end
 

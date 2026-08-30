@@ -635,7 +635,7 @@ function FUN:SetupTukuiProfile(newProfile)
 	E.db.movers['VehicleSeatMover'] = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-4'
 	E.db.movers['ZoneAbility'] = 'BOTTOM,ElvUIParent,BOTTOM,150,300'
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 	-- FUN:Print(L["Profile has been setup and loaded."])
 
 	E:StaticPopup_Show('FUN_CONFIG_RL')
