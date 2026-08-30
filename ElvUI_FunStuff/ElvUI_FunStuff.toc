@@ -1,8 +1,8 @@
-﻿## Interface: 120005, 50503, 38001, 20505, 11508
+﻿## Interface: 120100, 50504, 38002, 20506, 11509
 ## Title: |cff1784d1ElvUI|r |cff00FF98Fun|r|cffA330C9Stuff|r
 ## Author: Repooc
 ## Version: @project-version@
-## X-PreviousVersion: 1.6
+## X-PreviousVersion: 1.7
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## SavedVariables: FUNDB
