@@ -1,4 +1,3 @@
-v1.7 8/30/2026
+v1.8 10/31/2026
 
-• toc bumps
-• update what elvui func used to update
+• toc bump
